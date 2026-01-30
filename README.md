@@ -39,4 +39,5 @@ Run this script under the `hscope-main` directory for testing. Example:
 scripts/analyzer.sh --default-settings ./rules path/of/abc.txt
 ```
 
-The result is in test/analyzer_workspace/submodule1_workspace/analysis_log.txt, in which the analysis result is represented, if this tool finds a potential leakage from source to sink it will print a "sink in". If this tool finds a source, it will print "taint here".
+The result is printed directly to terminal, if the tool detects a potential leakage from source to sink, it will output the message "Found a flow to sink" . Detailed result is saved in `/test/analyzer_workspace/engine_workspace/taint`
+
