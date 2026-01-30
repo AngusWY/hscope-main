@@ -1,0 +1,2 @@
+def on(callback):
+    callback()

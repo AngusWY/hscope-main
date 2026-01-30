@@ -1,0 +1,7 @@
+- lang: abc
+  method_list: ["onPageShow","Index", "initialRender", "RegisterPage", "init", "onCreate", "send", "paramsLambda", "requestOAIDTrackingConsentPermissions", "onChangeCallback",  "aboutToAppear",  "func_main_0", "onWindowStageCreate", "onWindowStageDestroy","onBackground"]
+#  method_list: ["onPageShow","Index", "LoadAd", "RegisterPage", "init", "initialRender","onCreate", "send", "paramsLambda", "requestOAIDTrackingConsentPermissions", "onChangeCallback",  "aboutToAppear", "aboutToappear", "func_main_0", "onWindowStageCreate", "onWindowStageDestroy","onBackground"]
+#  method_list: ["initialRender1"]
+#  method_list: ["LoadAd"]
+#  method_list: ["aboutToAppear"]
+

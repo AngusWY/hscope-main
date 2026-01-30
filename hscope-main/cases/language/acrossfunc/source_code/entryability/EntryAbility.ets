@@ -1,0 +1,116 @@
+import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
+import { hilog } from '@kit.PerformanceAnalysisKit';
+import { window } from '@kit.ArkUI';
+import { deviceInfo } from "@kit.BasicServicesKit"
+const DOMAIN = 0x0000;
+
+export default class EntryAbility extends UIAbility {
+  brand = "abc"
+  onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
+    this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
+    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onCreate');
+  }
+
+  onDestroy(): void {
+    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onDestroy');
+  }
+
+  onWindowStageCreate(windowStage: window.WindowStage): void {
+    // Main window is created, set main page for this ability
+    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
+    this.brand = deviceInfo.brand
+    let br = deviceInfo.brand
+    windowStage.loadContent('pages/Index', (err) => {
+      if (err.code) {
+        hilog.error(DOMAIN, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err));
+        return;
+      }
+      hilog.info(DOMAIN, 'testTag', 'Succeeded in loading the content.');
+    });
+    this.send_brand()
+  }
+
+  onWindowStageDestroy(): void {
+    // Main window is destroyed, release UI related resources
+    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onWindowStageDestroy');
+  }
+
+  onForeground(): void {
+    // Ability has brought to foreground
+    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onForeground');
+  }
+
+  onBackground(): void {
+    // Ability has back to background
+    hilog.info(DOMAIN, 'testTag', '%{public}s', 'Ability onBackground');
+  }
+  send_brand():void {
+    let params: Array<Object> = [new Contact("张三", 13344556677)];
+
+    let want: Want = {
+      bundleName: "com.ohos.mms",
+      abilityName: "com.ohos.mms.MainAbility",
+      parameters: {
+        contactObjects: JSON.stringify(params),
+        pageFlag: "conversation",
+        // 
+        content: this.brand
+      }
+    };
+
+    this.context.startAbilityForResult(want)
+  }
+
+}
+
+export class Contact {
+  contactsName: string;
+  telephone: number;
+
+  constructor(contactsName: string, telephone: number) {
+    this.contactsName = contactsName;
+    this.telephone = telephone;
+  }
+}
+
+
+class A {
+  g:G
+  constructor(g:G) {
+    this.g = g
+  }
+}
+class G{
+  f:string
+  constructor(f:string) {
+    this.f = f
+  }
+}
+function  fun1(): void {
+  let g = new G("no taint")
+  let a = new A(g)
+  let b = a.g
+  foo(a)
+}
+
+function foo(z:A): void {
+  let x = z.g
+  let w = "taint"
+  x.f = w
+}
+
+
+// a = new A()
+// b = a.g
+//
+// # a1 = r1.f1
+// # b1 = a1.g1
+//
+//
+// foo(a)
+// sink(b.f)
+//
+// def foo(z):
+// x = z.g
+// w = source()
+// x.f = w
